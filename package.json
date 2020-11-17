@@ -1,0 +1,46 @@
+{
+  "_from": "quasar-table-filter",
+  "_id": "quasar-table-filter@0.0.0",
+  "_inBundle": false,
+  "_location": "/quasar-table-filter",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "quasar-table-filter",
+    "name": "quasar-table-filter",
+    "escapedName": "quasar-table-filter",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#DEV:/",
+    "#USER"
+  ],
+  "_spec": "quasar-table-filter",
+  "bugs": "",
+  "bundleDependencies": false,
+  "dependencies": {
+    "sortablejs": "^1.4.2"
+  },
+  "deprecated": false,
+  "description": "> Please note, this is currently a work-in-progress (WIP).",
+  "engines": {
+    "node": ">= 8.9.0",
+    "npm": ">= 5.6.0",
+    "yarn": ">= 1.6.0"
+  },
+  "homepage": "",
+  "license": "MIT",
+  "main": "src/index.js",
+  "name": "quasar-table-filter",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "scripts": {
+    "test": "echo \"No test specified\" && exit 0"
+  },
+  "version": "0.0.0"
+}
