@@ -41,7 +41,7 @@
                   name="fas fa-asterisk"
                   color="red"
                   style="font-size: 7px"
-                  v-if="column_options_selected[col.field].length > 0"
+                  v-if="column_options_selected[col.name].length > 0"
                 ></q-icon>
                 <q-menu>
                   <q-space />
@@ -62,8 +62,8 @@
                       multiple
                       emit-value
                       filled
-                      v-model="column_options_selected[col.field]"
-                      :options="column_options[col.field]"
+                      v-model="column_options_selected[col.name]"
+                      :options="column_options[col.name]"
                       style="width: 150px !important"
                     />
                   </div>
@@ -72,7 +72,7 @@
                     class="float-right q-mr-sm q-mb-sm text-capitalize"
                     size="sm"
                     v-close-popup
-                    @click="$set(column_options_selected, col.field, [])"
+                    @click="$set(column_options_selected, col.name, [])"
                     label="Clear"
                   />
                 </q-menu>

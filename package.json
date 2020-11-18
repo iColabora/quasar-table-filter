@@ -1,24 +1,5 @@
 {
-  "_from": "quasar-table-filter",
-  "_id": "quasar-table-filter@0.0.0",
-  "_inBundle": false,
-  "_location": "/quasar-table-filter",
-  "_phantomChildren": {},
-  "_requested": {
-    "type": "tag",
-    "registry": true,
-    "raw": "quasar-table-filter",
-    "name": "quasar-table-filter",
-    "escapedName": "quasar-table-filter",
-    "rawSpec": "",
-    "saveSpec": null,
-    "fetchSpec": "latest"
-  },
-  "_requiredBy": [
-    "#DEV:/",
-    "#USER"
-  ],
-  "_spec": "quasar-table-filter",
+  "version": "0.0.0",
   "bugs": "",
   "bundleDependencies": false,
   "dependencies": {
@@ -41,6 +22,5 @@
   },
   "scripts": {
     "test": "echo \"No test specified\" && exit 0"
-  },
-  "version": "0.0.0"
+  }
 }
