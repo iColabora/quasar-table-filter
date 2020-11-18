@@ -2,7 +2,8 @@
   <q-table
     :data="getFilteredValuesData"
     :columns="columns"
-    row-key="name"
+    row-key="id"
+    ref="table"
     :class="classes"
     :visible-columns="visibleColumns"
     :pagination.sync="paginationTable"
@@ -14,9 +15,13 @@
     :bordered="bordered"
     :square="square"
     :filter="filter"
+    :selected.sync="selected"
+    :selection="selection"
+    :no-data-label="noDataLabel"
   >
     <template v-slot:header="props">
       <q-tr :props="props">
+        <q-th v-if="selection !== 'none'"/>
         <q-th
           :props="props"
           @hover.native.stop
@@ -82,6 +87,7 @@
         </q-th>
       </q-tr>
       <q-tr :props="props" class="ignore-elements" v-if="columnsFilter">
+        <q-th v-if="selection !== 'none'"/>
         <q-th
           :key="col.name"
           v-for="col in props.cols"
@@ -134,58 +140,6 @@
     </template>
 
     <template
-      v-slot:top-right="props"
-      v-if="excelDownload || csvDownload || fullscreen || globalSearch"
-    >
-      <q-input
-        filled
-        v-if="globalSearch"
-        borderless
-        dense
-        debounce="300"
-        v-model="filter"
-        class="q-mr-md"
-        :placeholder="searchPlaceholder"
-      >
-        <template v-slot:append>
-          <q-icon name="search" />
-        </template>
-      </q-input>
-
-      <q-btn
-        class="bg-grey-2 q-mr-sm"
-        icon="fas fa-file-excel"
-        no-caps
-        v-if="excelDownload"
-        :label="excelDownloadLabel"
-        @click="exportTable('xlsx')"
-      />
-
-      <q-btn
-        class="bg-primary text-white"
-        icon="fas fa-file-csv"
-        no-caps
-        v-if="csvDownload"
-        :label="csvDownloadLabel"
-        @click="exportTable('csv')"
-      />
-
-      <q-btn
-        v-if="fullscreen"
-        flat
-        round
-        class="q-ml-sm"
-        dense
-        :icon="props.inFullscreen ? 'fullscreen_exit' : 'fullscreen'"
-        @click="props.toggleFullscreen"
-      >
-        <q-tooltip :disable="$q.platform.is.mobile" v-close-popup>{{
-          props.inFullscreen ? "Exit Fullscreen" : "Toggle Fullscreen"
-        }}</q-tooltip>
-      </q-btn>
-    </template>
-
-    <template
       v-for="propSlot in Object.keys($scopedSlots)"
       v-slot:[propSlot]="props"
     >
@@ -195,18 +149,6 @@
 </template>
 
 <script>
-import { exportFile } from 'quasar'
-
-function wrapCsvValue (val, formatFn) {
-  let formatted = formatFn !== void 0 ? formatFn(val) : val
-
-  formatted =
-    formatted === void 0 || formatted === null ? '' : String(formatted)
-
-  formatted = formatted.split('"').join('""')
-
-  return `"${formatted}"`
-}
 
 export default {
   name: 'TableFilter',
@@ -228,9 +170,13 @@ export default {
       type: Array,
       default: null
     },
-    fileName: {
+    filter: {
       type: String,
-      default: 'Download'
+      default: ''
+    },
+    selection: {
+      type: String,
+      default: 'none'
     },
     classes: {
       type: String,
@@ -240,24 +186,11 @@ export default {
       type: String,
       default: 'horizontal'
     },
-
-    searchPlaceholder: {
-      type: String,
-      default: 'Search'
-    },
-
-    csvDownloadLabel: {
+    noDataLabel: {
       type: String,
       default: ''
     },
 
-    excelDownloadLabel: {
-      type: String,
-      default: ''
-    },
-
-    csvDownload: Boolean,
-    excelDownload: Boolean,
     columnsFilter: Boolean,
     headerFilter: Boolean,
     dense: Boolean,
@@ -265,8 +198,6 @@ export default {
     flat: Boolean,
     bordered: Boolean,
     square: Boolean,
-    globalSearch: Boolean,
-    fullscreen: Boolean,
     loading: Boolean
   },
   data () {
@@ -274,11 +205,16 @@ export default {
       filter_data: {},
       column_options: {},
       column_options_selected: {},
-      filter: '',
-      paginationTable: {}
+      paginationTable: {},
+      selected: [],
+      isMounted: false
     }
   },
   computed: {
+    tableRef () {
+      if (!this.isMounted) return {}
+      return this.$refs.table
+    },
     getFilteredData () {
       let self = this
 
@@ -335,6 +271,9 @@ export default {
   created () {
     this.setup()
   },
+  mounted() {
+    this.isMounted = true
+  },
   methods: {
     setup () {
       this.paginationTable = this.pagination
@@ -374,39 +313,6 @@ export default {
       }, JSON.parse(JSON.stringify(columns)))
 
       this.column_options = options
-    },
-    exportTable (type) {
-      // naive encoding to csv format
-      const content = [this.columns.filter((c) => !c.disableFilter).map((col) => wrapCsvValue(col.label))]
-        .concat(
-          this.data.map((row) =>
-            this.columns.filter((c) => !c.disableFilter)
-              .map((col) =>
-                wrapCsvValue(
-                  typeof col.field === 'function'
-                    ? col.field(row)
-                    : row[col.field === void 0 ? col.name : col.field],
-                  col.format
-                )
-              )
-              .join(',')
-          )
-        )
-        .join('\r\n')
-
-      const status = exportFile(
-        this.fileName + '.' + type,
-        content,
-        'text/' + type
-      )
-
-      if (status !== true) {
-        this.$q.notify({
-          message: 'Browser denied file download...',
-          color: 'negative',
-          icon: 'warning'
-        })
-      }
     }
   }
 }

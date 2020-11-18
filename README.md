@@ -29,7 +29,7 @@ Like quasar default with follow properties:
 | disableFilter | Boolean | false   | true, false  | Hide filter column |
 
 
-<span style="color:red">IMPORTANT: </span> Property ```name``` must be equal ```field``` property, execpt field of type ```function```, where property ```name``` must be equal first key in ```function```. Example:
+<span style="color:red">IMPORTANT: </span> Property ```name``` must be equal ```field``` property, except field of type ```function```, where property ```name``` must be equal first key in ```function```. Example:
 
 ```Javascript
 [
@@ -38,31 +38,22 @@ Like quasar default with follow properties:
 ]
 
 ```
-# Data
-
-Like quasar default
 
 # Component keys
 
-|         Name         | Type    | Default    | Description                                                                                                                                                             |
-|:--------------------:|---------|------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| data                 | Array   | null       | Rows of data to display                                                                                                                                                 |
-| columns              | Array   | null       | The column definitions (Array of Objects)                                                                                                                               |
-| visible-columns      | Array   | null       | Array of Strings defining column names ('name' property of each column from 'columns' prop definitions); Columns marked as 'required' are not affected by this property |
-| classes              | String  |            | Classes in table                                                                                                                                                        |
-| separator            | String  | horizontal | Use a separator/border between rows, columns or all cells                                                                                                               |
-| global-search        | Boolean | false      | Show on top right a search input for filter in table                                                                                                                    |
-| search-placeholder   | String  | Search     | Search input placeholder                                                                                                                                                |
-| csv-download         | Boolean | false      | Show on top right a button to download csv of table                                                                                                                     |
-| csv-downloadlabel    | String  |            | Button label for csvDownload                                                                                                                                            |
-| excel-download       | Boolean | false      | Show on top right a button to download excel of table                                                                                                                   |
-| excel-download-label | String  |            | Button label for excelDownload                                                                                                                                          |
-| header-filter        | Boolean | false      | Show after column name, a button to show a filter column                                                                                                                |
-| columns-filter       | Boolean | false      | Show on header a line with filter each column                                                                                                                           |
-| dense                | Boolean | false      | Dense mode; Connect with $q.screen for responsive behavior                                                                                                              |
-| dark                 | Boolean | false      | Notify the component that the background is a dark color                                                                                                                |
-| flat                 | Boolean | false      | Applies a 'flat' design (no default shadow)                                                                                                                             |
-| bordered             | Boolean | false      | Applies a default border to the component                                                                                                                               |
-| square               | Boolean | false      | Removes border-radius so borders are squared                                                                                                                            |
-| fullscreen           | Boolean | false      | Fullscreen mode                                                                                                                                                         |
-| loading              | Boolean | false      | Put Table into 'loading' state; Notify the user something is happening behind the covers                                                                                |
+|       Name      | Type    | Default    | Description                                                                                                                                                             |
+|:---------------:|---------|------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| data            | Array   | null       | Rows of data to display                                                                                                                                                 |
+| columns         | Array   | null       | The column definitions (Array of Objects)                                                                                                                               |
+| visible-columns | Array   | null       | Array of Strings defining column names ('name' property of each column from 'columns' prop definitions); Columns marked as 'required' are not affected by this property |
+| classes         | String  |            | Classes in table                                                                                                                                                        |
+| separator       | String  | horizontal | Use a separator/border between rows, columns or all cells                                                                                                               |
+| header-filter   | Boolean | false      | Show after column name, a button to show a filter column                                                                                                                |
+| columns-filter  | Boolean | false      | Show on header a line with filter each column                                                                                                                           |
+| dense           | Boolean | false      | Dense mode; Connect with $q.screen for responsive behavior                                                                                                              |
+| dark            | Boolean | false      | Notify the component that the background is a dark color                                                                                                                |
+| flat            | Boolean | false      | Applies a 'flat' design (no default shadow)                                                                                                                             |
+| bordered        | Boolean | false      | Applies a default border to the component                                                                                                                               |
+| square          | Boolean | false      | Removes border-radius so borders are squared                                                                                                                            |
+| loading         | Boolean | false      | Put Table into 'loading' state; Notify the user something is happening behind the covers                                                                                |
+| no-data-label   | String  |            | Override default text to display when no data is available                                                                                                              |
