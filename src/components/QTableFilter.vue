@@ -213,27 +213,25 @@ export default {
 
   props: {
     data: {
-      type: [Array, Object],
+      type: Array,
       default: null
     },
     pagination: {
       type: Object,
       default: null
     },
-
     visibleColumns: {
       type: Array,
       default: () => undefined
     },
     columns: {
-      type: [Array, Object],
+      type: Array,
       default: null
     },
     fileName: {
       type: String,
       default: 'Download'
     },
-
     classes: {
       type: String,
       default: ''
