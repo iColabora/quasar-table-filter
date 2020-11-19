@@ -20,19 +20,21 @@
     :no-data-label="noDataLabel"
   >
     <template v-slot:header="props">
-      <q-tr :props="props">
+      <q-tr
+        :class="tableHeaderClass" 
+        :props="props"
+      >
         <q-th v-if="selection !== 'none'"/>
         <q-th
           :props="props"
           @hover.native.stop
           v-for="col in props.cols"
           :key="col.name"
+          class="text-center"
         >
           <div class="row inline">
-            <div class="column">
-              <p>{{ col.label }}</p>
-            </div>
-            <div class="column">
+            {{ col.label }}
+            <div v-if="headerFilter">
               <q-btn
                 flat
                 dense
@@ -40,7 +42,6 @@
                 icon="fa fa-filter"
                 class="q-ml-xs"
                 @click.stop
-                v-if="headerFilter"
               >
                 <q-icon
                   name="fas fa-asterisk"
@@ -187,6 +188,11 @@ export default {
       default: 'horizontal'
     },
     noDataLabel: {
+      type: String,
+      default: ''
+    },
+
+    tableHeaderClass: {
       type: String,
       default: ''
     },
