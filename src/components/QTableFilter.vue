@@ -92,7 +92,7 @@
         <q-th
           :key="col.name"
           v-for="col in props.cols"
-          style="padding: 0px 0px 0px 0px"
+          style="padding: 0 5px"
         >
           <div v-if="!col.disableFilter">
             <q-input
@@ -101,7 +101,6 @@
               "
               dense
               color="teal"
-              class="q-pl-xs q-pr-xs"
               filled
               v-model="filter_data[col.name]"
             >
