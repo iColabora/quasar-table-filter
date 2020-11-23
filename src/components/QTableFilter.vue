@@ -92,7 +92,7 @@
         <q-th
           :key="col.name"
           v-for="col in props.cols"
-          style="padding: 0 5px"
+          :style="tableFilterStyle || 'padding: 0 5px'"
         >
           <div v-if="!col.disableFilter">
             <q-input
@@ -196,6 +196,11 @@ export default {
       default: ''
     },
 
+    tableFilterStyle: {
+      type: String,
+      default: ''
+    },
+
     columnsFilter: Boolean,
     headerFilter: Boolean,
     dense: Boolean,
@@ -217,8 +222,7 @@ export default {
   },
   computed: {
     tableRef () {
-      if (!this.isMounted) return {}
-      return this.$refs.table
+      return this.isMounted ? this.$refs.table : {}
     },
     getFilteredData () {
       let self = this
@@ -304,12 +308,8 @@ export default {
               ? col.value === column.field(row) : col.value === value))
 
             if (hasInColumns === false) {
-              if (typeof column.field === 'function') {
-                const val = column.field(row)
-                cols[key].push({ label: val, value: val })
-              } else {
-                cols[key].push({ label: value, value })
-              }
+              const rowLabelValue = typeof column.field === 'function' ? column.field(row) : value
+              cols[key].push({ label: rowLabelValue, value: rowLabelValue })
             }
           }
         }
