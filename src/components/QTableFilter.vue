@@ -33,7 +33,17 @@
           class="text-center"
         >
           <div class="row inline">
-            {{ col.label }}
+            <q-btn
+              v-if="col.sortable === true"
+              @click="reverseSortOptions(col)"
+              :label="col.label"
+              flat
+              dense
+              no-caps
+              size="12px"
+            />
+            <span v-else>{{ col.label }}</span>
+
             <div v-if="headerFilter">
               <q-btn
                 flat
@@ -149,6 +159,7 @@
 </template>
 
 <script>
+import { getTypeOf } from '../utils'
 
 export default {
   name: 'TableFilter',
@@ -284,6 +295,10 @@ export default {
     this.isMounted = true
   },
   methods: {
+    reverseSortOptions (column) {
+      this.column_options[column.name] = this.column_options[column.name].reverse()
+    },
+
     setup () {
       this.paginationTable = this.pagination
       let self = this
@@ -293,35 +308,53 @@ export default {
         self.$set(self.column_options_selected, item.name, [])
       })
 
+      const isFunction = prop => getTypeOf(prop) === 'function'
+
       const columnsFields = this.columns.filter((c) => !c.disableFilter)
-        .map(({ field, name }) => typeof field === 'function' ? name : field)
+        .map(({ field, name }) => isFunction(field) ? name : field)
         .map((field) => ([field, []]))
 
-      const columns = Object.fromEntries(columnsFields)
+      let emptyOptionsByColumnField = Object.fromEntries(columnsFields)
+      emptyOptionsByColumnField = JSON.parse(JSON.stringify(emptyOptionsByColumnField))
 
-      const options = this.data.reduce((cols, row) => {
+      const optionsByColumnField = this.data.reduce((cols, row) => {
         for (const key in row) {
           if (cols !== undefined && cols.hasOwnProperty(key)) {
             const value = row[key]
             const column = this.columns.find(c => c.name === key)
-            const hasInColumns = Boolean(cols[key].find(col => typeof value === 'object'
+            const hasInColumns = Boolean(cols[key].find(col => getTypeOf(value) === 'object'
               ? col.value === column.field(row) : col.value === value))
 
             if (hasInColumns === false) {
-              const rowLabelValue = typeof column.field === 'function' ? column.field(row) : value
+              const rowLabelValue = isFunction(column.field) ? column.field(row) : value
+              
               cols[key].push({ label: rowLabelValue, value: rowLabelValue })
             }
           }
         }
 
         return cols
-      }, JSON.parse(JSON.stringify(columns)))
+      }, emptyOptionsByColumnField)
 
-      this.column_options = options
+      const sortedOptionsByColumnField = this.columns.reduce((colsOpts, column) => {
+        if (!column.disableFilter && column.sortable === true) {
+          const columnKey = isFunction(column.field) ? column.name : column.field
+
+          const sortMethodType = isFunction(column.sort) ? column.sort : (a, b) => String(a).localeCompare(String(b))
+
+          const sortedOptions = colsOpts[columnKey].sort((a, b) => sortMethodType(a.value, b.value))
+
+          return {
+            ...colsOpts,
+            [columnKey]: sortedOptions
+          }
+        }
+
+        return colsOpts
+      }, optionsByColumnField)
+
+      this.column_options = sortedOptionsByColumnField
     }
   }
 }
 </script>
-
-<style scoped>
-</style>
